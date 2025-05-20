@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Style Transfer Results - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Style Transfer Results</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-header">Content Image</div>
+                                <img src="{{ url_for('static', filename=style_image.content_image) }}" class="card-img-top" alt="Content Image">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-header">Style Image</div>
+                                <img src="{{ url_for('static', filename=style_image.style_image) }}" class="card-img-top" alt="Style Image">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-header">Result</div>
+                                <img src="{{ url_for('static', filename=style_image.result_image) }}" class="card-img-top" alt="Result Image">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">Transfer Details</div>
+                                <div class="card-body">
+                                    <p><strong>Created:</strong> {{ style_image.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                    <p><strong>Style Strength:</strong> {{ style_image.style_strength }}</p>
+                                    {% if style_image.style_prompt %}
+                                    <p><strong>Style Prompt:</strong> {{ style_image.style_prompt }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-grid gap-2">
+                                <a href="{{ url_for('style_transfer.download_result', image_id=style_image.id) }}" class="btn btn-success">Download Result</a>
+                                <a href="{{ url_for('style_transfer.transfer') }}" class="btn btn-primary">Create Another</a>
+                                <a href="{{ url_for('style_transfer.gallery') }}" class="btn btn-secondary">View Gallery</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

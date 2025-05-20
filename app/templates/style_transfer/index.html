@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Home - {{ super() }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5 text-center text-white">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Transform Your Photos with AI</h1>
+        <p class="lead mb-4">Apply artistic styles to your images using neural style transfer technology</p>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('style_transfer.transfer') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-magic me-2"></i>Start Creating
+        </a>
+        {% else %}
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-user-plus me-2"></i>Register
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 feature-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-upload fa-3x mb-3 text-primary"></i>
+                        <h4 class="card-title">Upload Photos</h4>
+                        <p class="card-text">Upload your content image and select a style image from our gallery or upload your own.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 feature-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-sliders-h fa-3x mb-3 text-primary"></i>
+                        <h4 class="card-title">Adjust Settings</h4>
+                        <p class="card-text">Fine-tune the style strength and add optional text prompts to guide the AI.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 feature-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-download fa-3x mb-3 text-primary"></i>
+                        <h4 class="card-title">Download Results</h4>
+                        <p class="card-text">Get your stylized image in high quality, ready to share or print.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Model Description -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="mb-4">Powered by Advanced AI</h2>
+                <p class="mb-4">Our neural style transfer application uses state-of-the-art deep learning models based on Stable Diffusion technology. This powerful AI system can understand both the content of your images and the style you want to apply.</p>
+                <h5 class="mb-3">Technical Highlights:</h5>
+                <ul class="mb-4">
+                    <li>Built on Stable Diffusion's powerful image generation capabilities</li>
+                    <li>Preserves structure and details of your original content</li>
+                    <li>Uses textual prompts to enhance style understanding</li>
+                    <li>Optimized for high-quality results with fast processing</li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='img/model-diagram.png') }}" alt="Neural Style Transfer Model" class="img-fluid rounded shadow" onerror="this.src='https://via.placeholder.com/600x400?text=Neural+Style+Transfer+Model'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Examples Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Example Transformations</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Van Gogh Style</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="example-container">
+                            <img src="https://via.placeholder.com/400x300?text=Original+Image" class="img-fluid example-before" alt="Original Image">
+                            <img src="https://via.placeholder.com/400x300?text=Van+Gogh+Style" class="img-fluid example-after" alt="Stylized Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Picasso Style</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="example-container">
+                            <img src="https://via.placeholder.com/400x300?text=Original+Image" class="img-fluid example-before" alt="Original Image">
+                            <img src="https://via.placeholder.com/400x300?text=Picasso+Style" class="img-fluid example-after" alt="Stylized Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Watercolor Style</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="example-container">
+                            <img src="https://via.placeholder.com/400x300?text=Original+Image" class="img-fluid example-before" alt="Original Image">
+                            <img src="https://via.placeholder.com/400x300?text=Watercolor+Style" class="img-fluid example-after" alt="Stylized Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if current_user.is_authenticated %}
+        <div class="text-center mt-4">
+            <a href="{{ url_for('style_transfer.transfer') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-magic me-2"></i>Create Your Own
+            </a>
+        </div>
+        {% else %}
+        <div class="text-center mt-4">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-user-plus me-2"></i>Sign Up to Start
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Add custom CSS for the home page -->
+{% endblock %}
+
+{% block styles %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #6c63ff 0%, #3f5efb 100%);
+        padding: 80px 0;
+        margin-bottom: 30px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .feature-card {
+        transition: transform 0.3s;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .example-container {
+        position: relative;
+        overflow: hidden;
+        height: 300px;
+    }
+
+    .example-before, .example-after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.5s;
+    }
+
+    .example-before {
+        z-index: 1;
+    }
+
+    .example-after {
+        opacity: 0;
+        z-index: 2;
+    }
+
+    .example-container:hover .example-before {
+        opacity: 0;
+    }
+
+    .example-container:hover .example-after {
+        opacity: 1;
+    }
+</style>
+{% endblock %}

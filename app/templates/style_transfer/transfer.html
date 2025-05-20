@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Transfer Style - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Style Transfer</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('style_transfer.transfer') }}" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    {{ form.content_image.label(class="form-label") }}
+                                    {{ form.content_image(class="form-control", id="content-image-input") }}
+                                    <div id="content-image-preview" class="mt-2 preview-container"></div>
+                                    {% for error in form.content_image.errors %}
+                                        <div class="text-danger">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    {{ form.style_image.label(class="form-label") }}
+                                    {{ form.style_image(class="form-control", id="style-image-input") }}
+                                    <div id="style-image-preview" class="mt-2 preview-container"></div>
+                                    {% for error in form.style_image.errors %}
+                                        <div class="text-danger">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.style_prompt.label(class="form-label") }}
+                            {{ form.style_prompt(class="form-control", placeholder="Enter an optional text prompt to guide the style transfer...") }}
+                            <small class="text-muted">Add a text description to further refine the style (optional)</small>
+                            {% for error in form.style_prompt.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.style_strength.label(class="form-label") }}
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">Subtle</span>
+                                {{ form.style_strength(class="form-range", type="range", min="0.1", max="1.0", step="0.05") }}
+                                <span class="ms-2">Strong</span>
+                            </div>
+                            {% for error in form.style_strength.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add JavaScript for image previews -->
+<script>
+    // Function to show image preview
+    function previewImage(input, previewId) {
+        const preview = document.getElementById(previewId);
+        preview.innerHTML = '';
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('img-fluid', 'rounded');
+                img.style.maxHeight = '200px';
+                preview.appendChild(img);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    // Setup event listeners
+    document.getElementById('content-image-input').addEventListener('change', function() {
+        previewImage(this, 'content-image-preview');
+    });
+    
+    document.getElementById('style-image-input').addEventListener('change', function() {
+        previewImage(this, 'style-image-preview');
+    });
+</script>
+{% endblock %}
